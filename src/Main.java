@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -15,7 +16,7 @@ public class Main extends Application{
   
    @Override
    public void start(Stage primaryStage) {
-       BorderPane root = new BorderPane();
+       AnchorPane root = new AnchorPane();
 
        primaryStage.setTitle("Cipher Creator");
        Button btn = new Button();
@@ -27,7 +28,7 @@ public class Main extends Application{
        });
        MenuBar menuBar = new MenuBar();
        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
-       root.setTop(menuBar);
+       menuBar.setPrefHeight(10);
        Menu fileMenu = new Menu("File");
        MenuItem newMenuItem = new MenuItem("Open ");
        MenuItem saveMenuItem = new MenuItem("Save");
@@ -37,6 +38,20 @@ public class Main extends Application{
                new SeparatorMenuItem(), exitMenuItem);
        menuBar.getMenus().addAll(fileMenu);
 
+
+       TextField inputField = new TextField();
+       inputField.setPrefHeight(250);
+       inputField.setPrefWidth(600);
+       inputField.setLayoutX(5);
+       inputField.setLayoutY(40);
+
+       TextField outputFiled = new TextField();
+       outputFiled.setPrefHeight(250);
+       outputFiled.setPrefWidth(600);
+       outputFiled.setLayoutX(5);
+       outputFiled.setLayoutY(320);
+
+       root.getChildren().addAll(menuBar,inputField,outputFiled);
        primaryStage.setScene(new Scene(root, 800, 600));
        primaryStage.show();
     }
