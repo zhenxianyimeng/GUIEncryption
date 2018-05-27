@@ -90,6 +90,8 @@ public class Main extends Application {
         clearAll(inputField, outputFiled, clearBtn, inputKey, checkEncode, checkDecode);
         openFile(newMenuItem, primaryStage);
         saveFile(saveMenuItem, primaryStage, outputFiled);
+        crack(inputField, outputFiled, crackBtn);
+
         root.getChildren().addAll(menuBar, inputField, outputFiled, checkEncode, checkDecode
                 , labelEncode, labelDecode, labelKey, inputKey,
                 startBtn, clearBtn, crackBtn);
@@ -97,8 +99,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void openFile(MenuItem openItem,Stage primaryStage){
-        openItem.setOnAction((e)->{
+
+    private void openFile(MenuItem openItem, Stage primaryStage) {
+        openItem.setOnAction((e) -> {
             FileChooser fileChooser = new FileChooser();
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
@@ -108,8 +111,8 @@ public class Main extends Application {
         });
     }
 
-    private void saveFile(MenuItem saveItem,Stage primaryStage, TextArea output){
-        saveItem.setOnAction((e)->{
+    private void saveFile(MenuItem saveItem, Stage primaryStage, TextArea output) {
+        saveItem.setOnAction((e) -> {
             FileChooser fileChooser1 = new FileChooser();
             fileChooser1.setTitle("Save");
 //            System.out.println(pic.getId());
@@ -130,6 +133,16 @@ public class Main extends Application {
         });
     }
 
+    private void crack(TextArea input, TextArea output, Button crack) {
+        crack.setOnAction((e)->{
+            String str = input.getText();
+            if (str == null || "".equals(str)) {
+                str = FileUtils.in;
+            }
+            output.setText(CaesarCiphar.crack(str));
+        });
+    }
+
     private void startEncode(TextArea input, TextArea output, Button start, TextField key, CheckBox encode, CheckBox decode) {
         start.setOnAction((event) -> {
             String strNum = key.getText();
@@ -145,7 +158,7 @@ public class Main extends Application {
                 return;
             }
             String str = input.getText();
-            if(str==null || "".equals(str)){
+            if (str == null || "".equals(str)) {
                 str = FileUtils.in;
             }
             Boolean isEncode = encode.isSelected();
