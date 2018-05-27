@@ -14,6 +14,10 @@ import javafx.stage.Stage;
 public class Test extends Application {
 
     public static void main(String[] args) {
+        char[] arr = null;
+        for(char ch : arr){
+            System.out.println(ch);
+        }
         launch(args);
     }
 
