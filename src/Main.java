@@ -1,6 +1,7 @@
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -86,15 +89,23 @@ public class Main extends Application {
         clearBtn.setLayoutY(260);
         clearBtn.setPrefWidth(90);
 
-        startEncode(inputField, outputFiled, startBtn, inputKey, checkEncode, checkDecode);
+        ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(
+                "Caesar Ciphar", "Vigenere Ciphar")
+        );
+        cb.getSelectionModel().select(0);
+        cb.setLayoutX(610);
+        cb.setLayoutY(300);
+        cb.setPrefWidth(90);
+
+        startEncode(cb, inputField, outputFiled, startBtn, inputKey, checkEncode, checkDecode);
         clearAll(inputField, outputFiled, clearBtn, inputKey, checkEncode, checkDecode);
         openFile(newMenuItem, primaryStage);
         saveFile(saveMenuItem, primaryStage, outputFiled);
-        crack(inputField, outputFiled, crackBtn);
+        crack(cb, inputField, outputFiled, crackBtn);
 
         root.getChildren().addAll(menuBar, inputField, outputFiled, checkEncode, checkDecode
                 , labelEncode, labelDecode, labelKey, inputKey,
-                startBtn, clearBtn, crackBtn);
+                startBtn, clearBtn, crackBtn, cb);
         primaryStage.setScene(new Scene(root, 720, 500));
         primaryStage.show();
     }
@@ -133,51 +144,101 @@ public class Main extends Application {
         });
     }
 
-    private void crack(TextArea input, TextArea output, Button crack) {
-        crack.setOnAction((e)->{
-            String str = input.getText();
-            if (str == null || "".equals(str)) {
-                str = FileUtils.in;
-            }
-            output.setText(CaesarCiphar.crack(str));
-        });
+    private void crack(ChoiceBox cb, TextArea input, TextArea output, Button crack) {
+//        if (cb.getSelectionModel().getSelectedIndex() == 0) {
+            crack.setOnAction((e) -> {
+                if (cb.getSelectionModel().getSelectedIndex() == 0) {
+                    String str = input.getText();
+                    if (str == null || "".equals(str)) {
+                        str = FileUtils.in;
+                    }
+                    output.setText(CaesarCiphar.crack(str));
+                }
+            });
     }
 
-    private void startEncode(TextArea input, TextArea output, Button start, TextField key, CheckBox encode, CheckBox decode) {
+    private void startEncode(ChoiceBox cb, TextArea input, TextArea output, Button start, TextField key, CheckBox encode, CheckBox decode) {
         start.setOnAction((event) -> {
-            String strNum = key.getText();
-            int num = 0;
-            try {
-                num = Integer.valueOf(strNum);
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Warning!");
-                alert.setContentText("Please enter a valid Key Number");
-                alert.showAndWait();
-                return;
-            }
-            String str = input.getText();
-            if (str == null || "".equals(str)) {
-                str = FileUtils.in;
-            }
-            Boolean isEncode = encode.isSelected();
-            Boolean isDecode = decode.isSelected();
-            String result = "";
-            if (isEncode) {
-                result = CaesarCiphar.encode(str, num);
-            } else if (isDecode) {
-                result = CaesarCiphar.decode(str, num);
+            if (cb.getSelectionModel().getSelectedIndex() == 0) {
+
+                String strNum = key.getText();
+                int num = 0;
+                try {
+                    num = Integer.valueOf(strNum);
+                } catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Warning!");
+                    alert.setContentText("Please enter a valid Key Number");
+                    alert.showAndWait();
+                    return;
+                }
+                String str = input.getText();
+                if (str == null || "".equals(str)) {
+                    str = FileUtils.in;
+                }
+                Boolean isEncode = encode.isSelected();
+                Boolean isDecode = decode.isSelected();
+                String result = "";
+                if (isEncode) {
+                    result = CaesarCiphar.encode(str, num);
+                } else if (isDecode) {
+                    result = CaesarCiphar.decode(str, num);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Warning!");
+                    alert.setContentText("Please select Encrypted or Decrypted");
+                    alert.showAndWait();
+                    return;
+                }
+                output.setText(result);
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
-                alert.setHeaderText("Warning!");
-                alert.setContentText("Please select Encrypted or Decrypted");
-                alert.showAndWait();
-                return;
+                String strNum = key.getText();
+//                try {
+//                    num = Integer.valueOf(strNum);
+//                } catch (Exception e) {
+//                    Alert alert = new Alert(Alert.AlertType.WARNING);
+//                    alert.setTitle("Warning Dialog");
+//                    alert.setHeaderText("Warning!");
+//                    alert.setContentText("Please enter a valid Key Number");
+//                    alert.showAndWait();
+//                    return;
+//                }
+                Pattern pattern = Pattern.compile("[a-zA-Z]+");
+                Matcher m = pattern.matcher(strNum);
+                boolean ismatch =  m.matches();
+                if(strNum=="" || !ismatch){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Warning!");
+                    alert.setContentText("Please enter a valid Key Number");
+                    alert.showAndWait();
+                    return;
+                }
+                String str = input.getText();
+                if (str == null || "".equals(str)) {
+                    str = FileUtils.in;
+                }
+                Boolean isEncode = encode.isSelected();
+                Boolean isDecode = decode.isSelected();
+                String result = "";
+                if (isEncode) {
+                    result = VigenereCiphar.encode(str, strNum);
+                } else if (isDecode) {
+                    result = VigenereCiphar.decode(str, strNum);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText("Warning!");
+                    alert.setContentText("Please select Encrypted or Decrypted");
+                    alert.showAndWait();
+                    return;
+                }
+                output.setText(result);
             }
 
-            output.setText(result);
         });
+
     }
 }

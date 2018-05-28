@@ -1,3 +1,5 @@
+import java.util.*;
+
 /**
  * @author zjb
  * @date 2018/5/28.
@@ -6,7 +8,18 @@ public class VigenereCiphar {
 
     public static String encode(String plainStr, String key) {
         try {
-            plainStr = plainStr.toLowerCase();
+            Map<Integer, Character> map = new LinkedHashMap<>();
+            StringBuilder sb = new StringBuilder();
+            char[] arr = plainStr.toCharArray();
+            for (int i=0; i<arr.length; i++){
+                char ch = arr[i];
+                if((ch>='a' && ch<='z')||(ch>='A' && ch<='Z')){
+                    sb.append(ch);
+                }else {
+                    map.put(i,ch);
+                }
+            }
+            plainStr = sb.toString().toLowerCase();
             key = key.toLowerCase();
             StringBuilder cryptograph = new StringBuilder();
             String letters = "abcdefghijklmnopqrstuvwxyz";
@@ -29,8 +42,19 @@ public class VigenereCiphar {
                     cryptograph.append(table[row][column]);
                 }
             }
-
-            return cryptograph.toString();
+            char[] temp = cryptograph.toString().toCharArray();
+            List<Character> list = new LinkedList<>();
+            for(char ch : temp){
+                list.add(ch);
+            }
+            for(int index : map.keySet() ){
+                list.add(index, map.get(index));
+            }
+            String result = "";
+            for(char ch : list){
+                result += ch;
+            }
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +63,18 @@ public class VigenereCiphar {
 
     public static String decode(String encodedStr, String key) {
         try {
-            encodedStr = encodedStr.toLowerCase();
+            Map<Integer, Character> map = new LinkedHashMap<>();
+            StringBuilder sb = new StringBuilder();
+            char[] arr = encodedStr.toCharArray();
+            for (int i=0; i<arr.length; i++){
+                char ch = arr[i];
+                if((ch>='a' && ch<='z')||(ch>='A' && ch<='Z')){
+                    sb.append(ch);
+                }else {
+                    map.put(i,ch);
+                }
+            }
+            encodedStr = sb.toString().toLowerCase();
             key = key.toLowerCase();
             StringBuilder plaintext = new StringBuilder();
             String letters = "abcdefghijklmnopqrstuvwxyz";
@@ -66,7 +101,19 @@ public class VigenereCiphar {
                     }
                 }
             }
-            return plaintext.toString();
+            char[] temp = plaintext.toString().toCharArray();
+            List<Character> list = new LinkedList<>();
+            for(char ch : temp){
+                list.add(ch);
+            }
+            for(int index : map.keySet() ){
+                list.add(index, map.get(index));
+            }
+            String result = "";
+            for(char ch : list){
+                result += ch;
+            }
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +121,7 @@ public class VigenereCiphar {
     }
 
     public static void main(String[] args) {
-        System.out.println(encode("iloveyouu","kiss"));
+        System.out.println(encode("i love youu","kiss"));
         System.out.println(decode("s tgno ggme","kiss"));
 //        System.out.println(decrypt("stgfmqycj", "kiss"));
     }
