@@ -99,7 +99,7 @@ public class Main extends Application {
 
         startEncode(cb, inputField, outputFiled, startBtn, inputKey, checkEncode, checkDecode);
         clearAll(inputField, outputFiled, clearBtn, inputKey, checkEncode, checkDecode);
-        openFile(newMenuItem, primaryStage);
+        openFile(newMenuItem, primaryStage, inputField);
         saveFile(saveMenuItem, primaryStage, outputFiled);
         crack(cb, inputField, outputFiled, crackBtn);
 
@@ -111,13 +111,13 @@ public class Main extends Application {
     }
 
 
-    private void openFile(MenuItem openItem, Stage primaryStage) {
+    private void openFile(MenuItem openItem, Stage primaryStage, TextArea input) {
         openItem.setOnAction((e) -> {
             FileChooser fileChooser = new FileChooser();
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showOpenDialog(primaryStage);
-            FileUtils.fileReader(file);
+            FileUtils.fileReader(file, input);
 //            System.out.println();
         });
     }

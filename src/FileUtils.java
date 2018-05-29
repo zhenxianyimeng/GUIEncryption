@@ -10,7 +10,7 @@ public class FileUtils {
     public static String in = "";
     public static String out = "";
 
-    public static String fileReader(File file){
+    public static String fileReader(File file, TextArea input){
         StringBuilder sb = new StringBuilder();
         BufferedReader bf = null;
         try {
@@ -33,6 +33,7 @@ public class FileUtils {
             }
         }
         in = sb.toString();
+        input.setText(sb.toString());
         return sb.toString();
     }
 
