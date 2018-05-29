@@ -1,19 +1,13 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +16,10 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * element layout
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         AnchorPane root = new AnchorPane();
@@ -110,6 +108,12 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * open file event
+     * @param openItem
+     * @param primaryStage
+     * @param input
+     */
 
     private void openFile(MenuItem openItem, Stage primaryStage, TextArea input) {
         openItem.setOnAction((e) -> {
@@ -122,6 +126,12 @@ public class Main extends Application {
         });
     }
 
+    /**
+     * save file event
+     * @param saveItem
+     * @param primaryStage
+     * @param output
+     */
     private void saveFile(MenuItem saveItem, Stage primaryStage, TextArea output) {
         saveItem.setOnAction((e) -> {
             FileChooser fileChooser1 = new FileChooser();
@@ -133,6 +143,15 @@ public class Main extends Application {
         });
     }
 
+    /**
+     * clear file event
+     * @param input
+     * @param output
+     * @param clear
+     * @param key
+     * @param encode
+     * @param decode
+     */
     private void clearAll(TextArea input, TextArea output, Button clear, TextField key, CheckBox encode, CheckBox decode) {
         clear.setOnAction((e) -> {
             input.setText("");
@@ -157,6 +176,16 @@ public class Main extends Application {
             });
     }
 
+    /**
+     * start event
+     * @param cb
+     * @param input
+     * @param output
+     * @param start
+     * @param key
+     * @param encode
+     * @param decode
+     */
     private void startEncode(ChoiceBox cb, TextArea input, TextArea output, Button start, TextField key, CheckBox encode, CheckBox decode) {
         start.setOnAction((event) -> {
             if (cb.getSelectionModel().getSelectedIndex() == 0) {
@@ -208,7 +237,7 @@ public class Main extends Application {
                 Pattern pattern = Pattern.compile("[a-zA-Z]+");
                 Matcher m = pattern.matcher(strNum);
                 boolean ismatch =  m.matches();
-                if(strNum=="" || !ismatch){
+                if("".equals(strNum) || !ismatch){
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Warning Dialog");
                     alert.setHeaderText("Warning!");

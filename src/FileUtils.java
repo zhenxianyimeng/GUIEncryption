@@ -2,14 +2,16 @@ import javafx.scene.control.TextArea;
 
 import java.io.*;
 
-/**
- * @author zjb
- * @date 2018/5/27.
- */
 public class FileUtils {
     public static String in = "";
     public static String out = "";
 
+    /**
+     * read file
+     * @param file
+     * @param input
+     * @return
+     */
     public static String fileReader(File file, TextArea input){
         StringBuilder sb = new StringBuilder();
         BufferedReader bf = null;
@@ -37,6 +39,11 @@ public class FileUtils {
         return sb.toString();
     }
 
+    /**
+     * write file
+     * @param output
+     * @param file
+     */
     public static void fileWriter(TextArea output, File file){
         BufferedWriter writer = null;
         try {

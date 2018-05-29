@@ -1,16 +1,16 @@
-import com.sun.deploy.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author zjb
- * @date 2018/5/26.
- */
 public class CaesarCiphar {
 
     private static final char MAGIC_CHAR = 'e';
 
+    /**
+     * crack method
+     * @param str
+     * @return
+     */
     public static String crack(String str){
         char[] arr = str.toCharArray();
         Map<Character, Integer> map = new HashMap<>();
@@ -37,6 +37,12 @@ public class CaesarCiphar {
     }
 
 
+    /**
+     * encode method
+     * @param str
+     * @param num
+     * @return
+     */
     public static String encode(String str, int num){
         if(str == null){
             return null;
@@ -55,6 +61,12 @@ public class CaesarCiphar {
         return sb.toString();
     }
 
+    /**
+     * decode method
+     * @param str
+     * @param num
+     * @return
+     */
     public static String decode(String str, int num){
         if(str == null){
             return null;
@@ -74,7 +86,6 @@ public class CaesarCiphar {
     }
 
     public static void main(String[] args) {
-//        CaesarCiphar caesarCiphar = new CaesarCiphar();
         String encode = CaesarCiphar.encode("Hello here is yours",3);
         System.out.println(encode);
         System.out.println(CaesarCiphar.crack(encode));

@@ -1,11 +1,13 @@
 import java.util.*;
 
-/**
- * @author zjb
- * @date 2018/5/28.
- */
 public class VigenereCiphar {
 
+    /**
+     * encode method
+     * @param plainStr
+     * @param key
+     * @return
+     */
     public static String encode(String plainStr, String key) {
         try {
             Map<Integer, Character> map = new LinkedHashMap<>();
@@ -61,6 +63,12 @@ public class VigenereCiphar {
         return null;
     }
 
+    /**
+     * decode method
+     * @param encodedStr
+     * @param key
+     * @return
+     */
     public static String decode(String encodedStr, String key) {
         try {
             Map<Integer, Character> map = new LinkedHashMap<>();
@@ -123,6 +131,5 @@ public class VigenereCiphar {
     public static void main(String[] args) {
         System.out.println(encode("i love youu","kiss"));
         System.out.println(decode("s tgno ggme","kiss"));
-//        System.out.println(decrypt("stgfmqycj", "kiss"));
     }
 }
